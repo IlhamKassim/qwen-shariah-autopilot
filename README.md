@@ -25,6 +25,8 @@ See `agent/CONTEXT.md` for the full glossary of what these new concepts mean, an
 
 ## Architecture
 
+See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the full diagram (Qwen Cloud ↔ agent ↔ Shariah Engine ↔ Alpaca/yfinance). Summary:
+
 ```
 shariah_engine/     read-only vendored engine (Factor Score math, universe/compliance, live reads)
 agent/
