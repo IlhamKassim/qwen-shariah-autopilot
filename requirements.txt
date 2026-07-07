@@ -1,0 +1,7 @@
+openai
+pandas
+pydantic
+requests
+python-dotenv
+yfinance
+numpy
