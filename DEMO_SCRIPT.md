@@ -1,6 +1,6 @@
 # Demo Video Script (~3 minutes)
 
-Target: Devpost submission video for **Track 4: Autopilot Agent**. Upload publicly to YouTube/Vimeo/Facebook Video.
+Target: Devpost submission video for **Track 4: Autopilot Agent**. Upload publicly to **YouTube, Vimeo, or Youku** (per Official Rules §4 — Facebook Video is not an accepted platform, despite being mentioned on the informal hackathon page). Max 3 minutes — judges aren't required to watch beyond that.
 
 ## Before recording
 

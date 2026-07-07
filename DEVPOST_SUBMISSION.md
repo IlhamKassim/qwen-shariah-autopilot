@@ -19,10 +19,9 @@ An autonomous quantitative analyst, built on Qwen3.7-Max, that reasons over a re
 ## Links
 
 - **Code repository:** https://github.com/IlhamKassim/qwen-shariah-autopilot (public, MIT licensed)
-- **Demo video:** `[YouTube/Vimeo/Facebook link — add once recorded]`
-- **Proof of Alibaba Cloud deployment recording:** `[add once recorded]`
+- **Demo video:** `[YouTube/Vimeo/Youku link — add once recorded]` (per Official Rules §4 — Facebook Video is NOT an accepted platform, despite being mentioned on the informal hackathon page)
 - **Architecture diagram:** https://github.com/IlhamKassim/qwen-shariah-autopilot/blob/main/ARCHITECTURE.md
-- **Alibaba Cloud API usage (code file):** https://github.com/IlhamKassim/qwen-shariah-autopilot/blob/main/agent/qwen_brain.py
+- **Proof of Alibaba Cloud Deployment (code file demonstrating Alibaba Cloud API usage):** https://github.com/IlhamKassim/qwen-shariah-autopilot/blob/main/agent/qwen_brain.py — per Official Rules, this code-file link IS the full requirement; no separate recording or cloud hosting is needed
 
 ## Detailed description
 
@@ -51,16 +50,15 @@ The brief asks for agents that "automate real-world business workflows end-to-en
 
 ### Built With
 
-- Qwen Cloud (`qwen3.7-max`, OpenAI-compatible tool calling)
+- Qwen Cloud (`qwen3.7-max`, OpenAI-compatible tool calling, an Alibaba Cloud service)
 - Python, `openai` SDK, `pandas`, `numpy`, `pydantic`
 - Alpaca (paper-trading account, read-only)
 - `yfinance` (price and fundamentals data)
-- Docker
-- Alibaba Cloud SAS (Simple Application Server) — see `ALIBABA_DEPLOYMENT.md`
+- Docker (optional — see `ALIBABA_DEPLOYMENT.md` for an optional real-hosting path, not required for submission)
 
 ---
 
 ## Notes for whoever fills this in
 
-- Fill in the two `[...]` link placeholders once the video is recorded and the Alibaba Cloud SAS deployment screenshot is taken.
-- Proof of Alibaba Cloud Deployment specifically requires a screenshot of the Alibaba Cloud Workbench Overview showing the agent actually running — not just a code-file link. See `ALIBABA_DEPLOYMENT.md` for the exact steps.
+- Fill in the one remaining `[...]` link placeholder (demo video) once recorded — must be YouTube, Vimeo, or Youku per Official Rules §4, not Facebook.
+- Proof of Alibaba Cloud Deployment is already satisfied by the `agent/qwen_brain.py` code-file link above — per the Official Rules (which prevail over the informal hackathon quickstart PDF), no separate recording or paid cloud hosting is required. See `ALIBABA_DEPLOYMENT.md` for the reasoning.

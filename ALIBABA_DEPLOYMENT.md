@@ -1,68 +1,44 @@
 # Alibaba Cloud Deployment
 
-The hackathon's submission checklist requires **Proof of Alibaba Cloud Deployment**, specifically: *"Find your Workbench Overview and take a screenshot of the running project."* This means a real cloud instance running the agent, screenshotted from Alibaba Cloud's own browser-based Workbench console — a code-file link alone is not sufficient.
+## What's actually required
 
-This document is a template: follow the steps below on your own Alibaba Cloud account, then fill in the **Proof of Deployment** section at the bottom before submitting to Devpost.
+The Hackathon's legally-binding **Official Rules** (which explicitly state they prevail over any other Hackathon materials in case of conflict — see Official Rules §11) define Proof of Alibaba Cloud Deployment as:
 
-## Recommended: SAS (Simple Application Server), not ECS
+> "Include Proof of Alibaba Cloud Deployment: You must demonstrate that the backend is running on Alibaba Cloud. Proof must be a link to a code file in their code repo that demonstrates use of Alibaba Cloud services and APIs."
 
-The hackathon's own deployment guide recommends SAS over ECS for exactly this project's shape: *"Your agent calls external LLM APIs (no local GPU needed)... You're an individual developer, student, or small team... You want to deploy in under 5 minutes."* ECS is worth it instead only if you need GPU inference, auto-scaling, or high concurrency — none of which apply here (this agent just makes outbound calls to Qwen Cloud and Alpaca/yfinance).
+This is satisfied by a **code-file link — no paid cloud hosting required.** Qwen Cloud is Alibaba Cloud's own model service (Alibaba Cloud is the Hackathon's Sponsor per Official Rules §2), so calling it from this codebase already qualifies.
 
-### Steps
+**The proof link for this project:** [`agent/qwen_brain.py`](agent/qwen_brain.py), specifically:
 
-1. **Create the instance**
-   - Go to the [SAS Console](https://swas.console.alibabacloud.com) (this is Alibaba Cloud International — a separate account/login from Qwen Cloud, sign up there first if you haven't) → **Create Server**
-   - Pick a region, then under **Image**, choose the pre-installed **Docker** application image (fastest — skips manual Docker install)
-   - Pick the smallest plan (this agent is lightweight — no GPU, no heavy compute)
-   - Complete payment; the instance provisions immediately with a public IP
+```python
+_BASE_URL = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
+_MODEL = "qwen3.7-max"
+```
 
-2. **Reset the root password**
-   - SAS instances ship with no default password — do this from the console under **Reset Password** before connecting
+and the `_client()` function that constructs the OpenAI SDK client against that Alibaba Cloud endpoint. Paste that file's GitHub URL directly into the Devpost submission form field for this requirement.
 
-3. **Connect via Workbench**
-   - Click **Connect** on the instance card → opens a one-click browser terminal, no SSH client or password needed
-   - This is also where you'll take the required screenshot later
+(An earlier, less-official "Proof of Deploy" quickstart PDF circulated for this hackathon suggested a screenshot of a real running Alibaba Cloud instance — e.g. via ECS or Simple Application Server (SAS). That is **not required** per the Official Rules, and is not pursued in this project.)
 
-4. **Verify Docker is ready**
-   ```bash
-   docker --version
-   docker compose version
-   ```
+## Optional: real hosting, if you want it anyway
 
-5. **Clone and build**
-   ```bash
+If you later want an actual deployed instance (e.g. for a more impressive demo, or because "Technical Depth & Engineering" judging might reward extra infrastructure sophistication), SAS is the fastest path — the hackathon's own quickstart guide recommends it over ECS for exactly this project's shape (external LLM API calls, no local GPU, individual developer). This is a nice-to-have, not a submission blocker.
+
+<details>
+<summary>SAS deployment steps (optional)</summary>
+
+1. Go to the [SAS Console](https://swas.console.alibabacloud.com) (Alibaba Cloud International — separate account from Qwen Cloud) → **Create Server**
+2. Pick a region, choose the pre-installed **Docker** application image
+3. Pick the smallest plan, complete payment
+4. Reset the root password from the console
+5. Connect via **Workbench** (one-click browser terminal)
+6. ```bash
+   docker --version   # confirm Docker's ready
    git clone https://github.com/IlhamKassim/qwen-shariah-autopilot.git
    cd qwen-shariah-autopilot
    docker build -t qwen-shariah-autopilot .
-   ```
-
-6. **Add your `.env`** (paste real Alpaca + Qwen credentials — never commit this file)
-   ```bash
-   nano .env   # or vi/vim
-   ```
-
-7. **Run the agent interactively**
-   ```bash
+   nano .env           # paste real Alpaca + Qwen credentials
    docker run -it --env-file .env qwen-shariah-autopilot
    ```
-   Ask it something (e.g. "Analyze the portfolio and tell me if we should rebalance") so the Workbench terminal shows the agent actually working, not just an idle prompt.
+7. No inbound ports needed beyond SAS's defaults — this agent has no HTTP server surface.
 
-8. **Take the required screenshot**
-   - While the agent is running (or just finished a real response) in the Workbench terminal, screenshot the **Workbench Overview** page — it should show both Alibaba Cloud's own console chrome and the running agent's terminal output in the same frame. This is the proof judges are asking for.
-
-9. **Open only the ports you need**
-   - This agent has no inbound HTTP surface (it's a terminal CLI, not a server) — SAS's default firewall rules (22, 80, 443) are more than sufficient; you don't need to open anything extra for this project.
-
-## Alternative: ECS
-
-Only worth it if you specifically want a persistent, always-on demo instance rather than an on-demand Workbench session. The steps are the same shape (create instance → install Docker → clone/build/run), just with more manual VPC/security-group setup than SAS requires. See the hackathon's own "How To Deploy on Alibaba Cloud" (ECS) section if you go this route.
-
-## Proof of Deployment
-
-_Fill in after deploying:_
-
-- **Deployment target:** SAS / ECS
-- **Region:** `<e.g. ap-southeast-1>`
-- **Instance ID:** `<...>`
-- **Date deployed:** `<...>`
-- **Workbench Overview screenshot:** `<link or attach to Devpost submission>`
+</details>
