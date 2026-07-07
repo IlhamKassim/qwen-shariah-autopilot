@@ -11,7 +11,7 @@ The hackathon's own deployment guide recommends SAS over ECS for exactly this pr
 ### Steps
 
 1. **Create the instance**
-   - Go to the [SAS Console](https://ecs.console.aliyun.com/swas) → **Create Server**
+   - Go to the [SAS Console](https://swas.console.alibabacloud.com) (this is Alibaba Cloud International — a separate account/login from Qwen Cloud, sign up there first if you haven't) → **Create Server**
    - Pick a region, then under **Image**, choose the pre-installed **Docker** application image (fastest — skips manual Docker install)
    - Pick the smallest plan (this agent is lightweight — no GPU, no heavy compute)
    - Complete payment; the instance provisions immediately with a public IP
