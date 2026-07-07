@@ -1,48 +1,68 @@
 # Alibaba Cloud Deployment
 
+The hackathon's submission checklist requires **Proof of Alibaba Cloud Deployment**, specifically: *"Find your Workbench Overview and take a screenshot of the running project."* This means a real cloud instance running the agent, screenshotted from Alibaba Cloud's own browser-based Workbench console — a code-file link alone is not sufficient.
+
 This document is a template: follow the steps below on your own Alibaba Cloud account, then fill in the **Proof of Deployment** section at the bottom before submitting to Devpost.
 
-## Option A — ECS (recommended for this project)
+## Recommended: SAS (Simple Application Server), not ECS
 
-The agent is a stateful interactive CLI, so a plain ECS instance running the container is the simplest honest deployment target (no need for EAS's model-serving machinery).
+The hackathon's own deployment guide recommends SAS over ECS for exactly this project's shape: *"Your agent calls external LLM APIs (no local GPU needed)... You're an individual developer, student, or small team... You want to deploy in under 5 minutes."* ECS is worth it instead only if you need GPU inference, auto-scaling, or high concurrency — none of which apply here (this agent just makes outbound calls to Qwen Cloud and Alpaca/yfinance).
 
-1. **Create an ECS instance**
-   - Console → Elastic Compute Service → Create Instance
-   - Recommended: `ecs.t6-c1m2.large` (2 vCPU / 4GB), Ubuntu 22.04, pay-as-you-go
-   - Open only the ports you need (SSH/22); this agent has no inbound HTTP surface
+### Steps
 
-2. **Install Docker**
+1. **Create the instance**
+   - Go to the [SAS Console](https://ecs.console.aliyun.com/swas) → **Create Server**
+   - Pick a region, then under **Image**, choose the pre-installed **Docker** application image (fastest — skips manual Docker install)
+   - Pick the smallest plan (this agent is lightweight — no GPU, no heavy compute)
+   - Complete payment; the instance provisions immediately with a public IP
+
+2. **Reset the root password**
+   - SAS instances ship with no default password — do this from the console under **Reset Password** before connecting
+
+3. **Connect via Workbench**
+   - Click **Connect** on the instance card → opens a one-click browser terminal, no SSH client or password needed
+   - This is also where you'll take the required screenshot later
+
+4. **Verify Docker is ready**
    ```bash
-   curl -fsSL https://get.docker.com | sh
-   sudo usermod -aG docker $USER
+   docker --version
+   docker compose version
    ```
 
-3. **Build and run the agent**
+5. **Clone and build**
    ```bash
-   git clone <this-repo-url>
+   git clone https://github.com/IlhamKassim/qwen-shariah-autopilot.git
    cd qwen-shariah-autopilot
    docker build -t qwen-shariah-autopilot .
+   ```
+
+6. **Add your `.env`** (paste real Alpaca + Qwen credentials — never commit this file)
+   ```bash
+   nano .env   # or vi/vim
+   ```
+
+7. **Run the agent interactively**
+   ```bash
    docker run -it --env-file .env qwen-shariah-autopilot
    ```
-   (Add a `Dockerfile` — `FROM python:3.11-slim`, `COPY . .`, `RUN pip install -r requirements.txt`, `CMD ["python", "main.py"]` — if not already present.)
+   Ask it something (e.g. "Analyze the portfolio and tell me if we should rebalance") so the Workbench terminal shows the agent actually working, not just an idle prompt.
 
-4. **Keep it running for a demo session** (optional, for judges who want to interact live)
-   ```bash
-   docker run -d --env-file .env --name autopilot qwen-shariah-autopilot tail -f /dev/null
-   docker exec -it autopilot python main.py
-   ```
+8. **Take the required screenshot**
+   - While the agent is running (or just finished a real response) in the Workbench terminal, screenshot the **Workbench Overview** page — it should show both Alibaba Cloud's own console chrome and the running agent's terminal output in the same frame. This is the proof judges are asking for.
 
-## Option B — EAS (if you want a hosted inference-style endpoint)
+9. **Open only the ports you need**
+   - This agent has no inbound HTTP surface (it's a terminal CLI, not a server) — SAS's default firewall rules (22, 80, 443) are more than sufficient; you don't need to open anything extra for this project.
 
-EAS is built for model-serving workloads (a request/response HTTP endpoint), which is a different shape than this project's interactive CLI. If your hackathon submission wants an HTTP-accessible demo instead of a terminal session, that requires wrapping `agent/qwen_brain.run_conversation` in a small FastAPI app first, then deploying that app to EAS as a custom container processor. That wrapper is out of scope for the current phases — flag it if you want it built before deployment.
+## Alternative: ECS
+
+Only worth it if you specifically want a persistent, always-on demo instance rather than an on-demand Workbench session. The steps are the same shape (create instance → install Docker → clone/build/run), just with more manual VPC/security-group setup than SAS requires. See the hackathon's own "How To Deploy on Alibaba Cloud" (ECS) section if you go this route.
 
 ## Proof of Deployment
 
 _Fill in after deploying:_
 
-- **Deployment target:** ECS / EAS
+- **Deployment target:** SAS / ECS
 - **Region:** `<e.g. ap-southeast-1>`
-- **Instance ID / Service name:** `<...>`
+- **Instance ID:** `<...>`
 - **Date deployed:** `<...>`
-- **Screenshot or console link:** `<...>`
-- **Demo access (if applicable):** `<public URL, or "SSH + terminal demo only">`
+- **Workbench Overview screenshot:** `<link or attach to Devpost submission>`

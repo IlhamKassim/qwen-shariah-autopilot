@@ -55,11 +55,12 @@ The brief asks for agents that "automate real-world business workflows end-to-en
 - Python, `openai` SDK, `pandas`, `numpy`, `pydantic`
 - Alpaca (paper-trading account, read-only)
 - `yfinance` (price and fundamentals data)
-- Docker (containerized for Alibaba Cloud deployment — see `ALIBABA_DEPLOYMENT.md`)
+- Docker
+- Alibaba Cloud SAS (Simple Application Server) — see `ALIBABA_DEPLOYMENT.md`
 
 ---
 
 ## Notes for whoever fills this in
 
-- Fill in the two `[...]` link placeholders once the video and Alibaba Cloud deployment proof are recorded.
-- The "Built With" list should be updated if the Alibaba deployment path changes (e.g. add "Alibaba Cloud ECS" if real hosting ends up required).
+- Fill in the two `[...]` link placeholders once the video is recorded and the Alibaba Cloud SAS deployment screenshot is taken.
+- Proof of Alibaba Cloud Deployment specifically requires a screenshot of the Alibaba Cloud Workbench Overview showing the agent actually running — not just a code-file link. See `ALIBABA_DEPLOYMENT.md` for the exact steps.
